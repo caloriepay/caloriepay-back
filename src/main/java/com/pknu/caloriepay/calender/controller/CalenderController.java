@@ -3,13 +3,12 @@ package com.pknu.caloriepay.calender.controller;
 import com.pknu.caloriepay.calender.exception.StartIsAfterEndDateException;
 import com.pknu.caloriepay.calender.service.CalenderService;
 import com.pknu.caloriepay.calender.vo.ResponseCalender;
+import com.pknu.caloriepay.calender.vo.ResponseCalenderDetail;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,6 +31,27 @@ public class CalenderController {
         List<ResponseCalender> responseCalender = calenderService.findCalenders(start,end);
         return ResponseEntity.ok(responseCalender);
     }
+    @GetMapping("/{memberId}")
+    public ResponseEntity<List<ResponseCalender>> findCalendersByMemberId(@RequestParam(name = "start")LocalDate start, @RequestParam(name = "end") LocalDate end, @PathVariable(name = "memberId") Long userId){
 
+        if(start.isAfter(end)){
+            throw new StartIsAfterEndDateException();
+        }
 
+        List<ResponseCalender> responseCalender = calenderService.findCalendersByMemberId(start,end,userId);
+
+        return ResponseEntity.ok(responseCalender);
+    }
+    @GetMapping("/detail")
+    public ResponseEntity<ResponseCalenderDetail> findCalenderDetail(@RequestParam("date") LocalDate date) {
+        ResponseCalenderDetail responseCalenderDetail = calenderService.findCalenderDetail(date);
+
+        return ResponseEntity.ok(responseCalenderDetail);
+    }
+    @GetMapping("/detail/{memberId}")
+    public ResponseEntity<ResponseCalenderDetail> findCalenderDetailByMemberId(@PathVariable Long memberId, @RequestParam("date")LocalDate date){
+        ResponseCalenderDetail responseCalenderDetail = calenderService.findCalenderDetailByMemberId(date,memberId);
+
+        return ResponseEntity.ok(responseCalenderDetail);
+    }
 }

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class ResponseCalender {
 
     private Long id;
-    private Long memberId;
+    private Long userId;
     private LocalDate date;
     private Tier tier;
 }
