@@ -27,8 +27,8 @@ public class CalenderController {
         if(start.isAfter(end)){
             throw new StartIsAfterEndDateException();
         }
-
-        List<ResponseCalender> responseCalender = calenderService.findCalenders(start,end);
+        Long memberId = 1L;
+        List<ResponseCalender> responseCalender = calenderService.findCalendersByMemberId(start,end,memberId);
         return ResponseEntity.ok(responseCalender);
     }
     @GetMapping("/{memberId}")
@@ -44,7 +44,8 @@ public class CalenderController {
     }
     @GetMapping("/detail")
     public ResponseEntity<ResponseCalenderDetail> findCalenderDetail(@RequestParam("date") LocalDate date) {
-        ResponseCalenderDetail responseCalenderDetail = calenderService.findCalenderDetail(date);
+        Long memberId = 1L;
+        ResponseCalenderDetail responseCalenderDetail = calenderService.findCalenderDetailByMemberId(date,memberId);
 
         return ResponseEntity.ok(responseCalenderDetail);
     }

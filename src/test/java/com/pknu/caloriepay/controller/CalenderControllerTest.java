@@ -1,6 +1,5 @@
 package com.pknu.caloriepay.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pknu.caloriepay.calender.controller.CalenderController;
 import com.pknu.caloriepay.calender.service.CalenderService;
@@ -52,7 +51,7 @@ public class CalenderControllerTest {
                 new ResponseCalender(2L, 1L, LocalDate.now().plusDays(1), Tier.S)
         );
 
-        given(calenderService.findCalenders(any(),any())).willReturn(responseCalender);
+        given(calenderService.findCalendersByMemberId(any(),any(),any())).willReturn(responseCalender);
 
         mockMvc.perform(
                         MockMvcRequestBuilders
@@ -78,11 +77,11 @@ public class CalenderControllerTest {
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
                 .andExpect(result -> {
                     ErrorResponseDto responseDto = objectMapper.readValue(result.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponseDto.class);
-                    assertThat(responseDto.getMesssage()).isEqualTo(ErrorCode.NOT_ALLOWED_DATE_FORMAT.getMessage());
+                    assertThat(responseDto.getMessage()).isEqualTo(ErrorCode.NOT_ALLOWED_DATE_FORMAT.getMessage());
                 })
                 .andDo(print());
 //        calenderservice.getCalender 0번실행
-        verify(calenderService, times(0)).findCalenders(any(),any());
+        verify(calenderService, times(0)).findCalendersByMemberId(any(),any(),any());
     }
 
     @Test
@@ -98,10 +97,10 @@ public class CalenderControllerTest {
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
                 .andExpect(result -> {
                     ErrorResponseDto responseDto = objectMapper.readValue(result.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponseDto.class);
-                    assertThat(responseDto.getMesssage()).isEqualTo(ErrorCode.START_IS_AFTER_END.getMessage());
+                    assertThat(responseDto.getMessage()).isEqualTo(ErrorCode.START_IS_AFTER_END.getMessage());
                 })
                 .andDo(print());
-        verify(calenderService, times(0)).findCalenders(any(),any());
+        verify(calenderService, times(0)).findCalendersByMemberId(any(),any(),any());
     }
 
     @Test
@@ -139,7 +138,7 @@ public class CalenderControllerTest {
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
                 .andExpect(result -> {
                     ErrorResponseDto responseDto = objectMapper.readValue(result.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponseDto.class);
-                    assertThat(responseDto.getMesssage()).isEqualTo(ErrorCode.NOT_ALLOWED_DATE_FORMAT.getMessage());
+                    assertThat(responseDto.getMessage()).isEqualTo(ErrorCode.NOT_ALLOWED_DATE_FORMAT.getMessage());
                 })
                 .andDo(print());
 //        calenderservice.getCalender 0번실행
@@ -160,7 +159,7 @@ public class CalenderControllerTest {
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
                 .andExpect(result -> {
                     ErrorResponseDto responseDto = objectMapper.readValue(result.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponseDto.class);
-                    assertThat(responseDto.getMesssage()).isEqualTo(ErrorCode.START_IS_AFTER_END.getMessage());
+                    assertThat(responseDto.getMessage()).isEqualTo(ErrorCode.START_IS_AFTER_END.getMessage());
                 })
                 .andDo(print());
         verify(calenderService, times(0)).findCalendersByMemberId(any(),any(),any());
@@ -189,7 +188,7 @@ public class CalenderControllerTest {
                 .build();
 
 
-        given(calenderService.findCalenderDetail(any())).willReturn(responseCalenderDetail);
+        given(calenderService.findCalenderDetailByMemberId(any(),any())).willReturn(responseCalenderDetail);
 
         mockMvc.perform(
                         MockMvcRequestBuilders
@@ -214,10 +213,10 @@ public class CalenderControllerTest {
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
                 .andExpect(result -> {
                     ErrorResponseDto responseDto = objectMapper.readValue(result.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponseDto.class);
-                    assertThat(responseDto.getMesssage()).isEqualTo(ErrorCode.NOT_ALLOWED_DATE_FORMAT.getMessage());
+                    assertThat(responseDto.getMessage()).isEqualTo(ErrorCode.NOT_ALLOWED_DATE_FORMAT.getMessage());
                 })
                 .andDo(print());
-        verify(calenderService, times(0)).findCalenderDetail(any());
+        verify(calenderService, times(0)).findCalenderDetailByMemberId(any(),any());
     }
 
 
@@ -267,7 +266,7 @@ public class CalenderControllerTest {
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
                 .andExpect(result -> {
                     ErrorResponseDto responseDto = objectMapper.readValue(result.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponseDto.class);
-                    assertThat(responseDto.getMesssage()).isEqualTo(ErrorCode.NOT_ALLOWED_DATE_FORMAT.getMessage());
+                    assertThat(responseDto.getMessage()).isEqualTo(ErrorCode.NOT_ALLOWED_DATE_FORMAT.getMessage());
                 })
                 .andDo(print());
         verify(calenderService, times(0)).findCalenderDetailByMemberId(any(),any());

@@ -15,12 +15,13 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @Slf4j
 public class CalenderControllerExceptionHandler {
 
+
     @ExceptionHandler(StartIsAfterEndDateException.class)
     public ResponseEntity<ErrorResponseDto> handleStartIsAfterEndDateException(StartIsAfterEndDateException ex){
         ErrorResponseDto errorResponseDto = ex.getErrorResponseDto();
 
         log.error("Error Location -> {}",ex.getStackTrace()[0]);
-        log.error("Error Message -> {}",errorResponseDto.getMesssage());
+        log.error("Error Message -> {}",errorResponseDto.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(errorResponseDto);
@@ -31,7 +32,7 @@ public class CalenderControllerExceptionHandler {
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.NOT_ALLOWED_DATE_FORMAT.getCode(), ErrorCode.NOT_ALLOWED_DATE_FORMAT.getMessage());
 
         log.error("Error Location -> {}",ex.getStackTrace()[0]);
-        log.error("Error Message -> {}",errorResponseDto.getMesssage());
+        log.error("Error Message -> {}",errorResponseDto.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(errorResponseDto);
