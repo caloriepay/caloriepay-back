@@ -4,11 +4,12 @@ import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class Profile {
-    private String gender;
+    private Gender gender;
     private int age;
     private double height;
     private double weight;
-    private Target target;
+    private Goal goal;
+    private double targetWeight;
     private ActivityLevel activityLevel;
 
 }
