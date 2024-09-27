@@ -11,13 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "member_id")
     private Long id;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserCredentials userCredentials;
 
     private String name;
     private String email;

@@ -11,14 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCredentials {
+public class MemberCredentials {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_credentials_id")
     private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     private String password;
 
