@@ -4,7 +4,6 @@ import jakarta.persistence.Embeddable;
 import lombok.Builder;
 
 @Embeddable
-@Builder
 public class Profile {
     private Gender gender;
     private int age;

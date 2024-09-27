@@ -27,7 +27,16 @@ public class Member {
     @Embedded
     private Preferences preferences;
 
-
+    // Member 엔티티의 생성 메서드
+    public static Member createMember(String name, String email, String phoneNumber, String nickname, Profile profile, Preferences preferences) {
+        return Member.builder()
+                .name(name)
+                .email(email)
+                .phoneNumber(phoneNumber)
+                .nickname(nickname)
+                .preferences(preferences)
+                .build();
+    }
 
 
 

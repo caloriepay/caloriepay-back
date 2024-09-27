@@ -17,6 +17,19 @@ public class MemberCredentials {
     @Column(name = "member_credentials_id")
     private Long id;
 
-    private String password;
+    @OneToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    private String encodedPassword;
+
+    // MemberCredentials 생성 메서드
+    public static MemberCredentials createCredentials(Member member, String encodedPassword) {
+        return MemberCredentials.builder()
+                .member(member)  // Member를 참조
+                .encodedPassword(encodedPassword)
+                .build();
+    }
+
 
 }
