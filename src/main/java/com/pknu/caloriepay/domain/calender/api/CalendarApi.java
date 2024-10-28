@@ -10,12 +10,15 @@ import com.pknu.caloriepay.domain.exercise.dto.ResponseExerciseRecordDto;
 import com.pknu.caloriepay.global.dto.BaseRes;
 import com.pknu.caloriepay.global.enums.ResCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -26,6 +29,19 @@ public class CalendarApi {
 
     private final CalendarDetailSearchService calendarDetailSearchService;
     private final CalendarSearchService calendarSearchService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        binder.registerCustomEditor(LocalDate.class, new CustomDateEditor(new java.text.SimpleDateFormat("yyyy-MM-dd"), true) {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                text = text.replaceAll("\"", ""); // 따옴표 제거
+                setValue(LocalDate.parse(text, dateFormatter));
+            }
+        });
+    }
+
     @GetMapping("")
     public ResponseEntity<BaseRes<List<ResponseCalendarDto>>> getCalendarByMemberId(
             @AuthenticationPrincipal CurrentMemberInfo memberInfo,
