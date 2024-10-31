@@ -69,7 +69,7 @@ public class CalorieScoreAndChangeEventListener {
     }
 
 //    운동 기록시 일별 칼로리 계산
-    @CacheEvict(value = USER_CALORIE_SCORE_CACHE, key = "#exerciseEventDto.userId", cacheManager = "caloriePayCacheManager")
+    @CacheEvict(value = USER_CALORIE_CHANGE_CACHE, key = "#exerciseEventDto.userId", cacheManager = "caloriePayCacheManager")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void caloriePlus(ExerciseEventDto exerciseEventDto){
