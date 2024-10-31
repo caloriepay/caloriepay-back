@@ -6,6 +6,7 @@ import com.pknu.caloriepay.global.event.DailyCalorieSummaryEventDto;
 import com.pknu.caloriepay.global.event.MonthCalorieSummeryEventDto;
 import com.pknu.caloriepay.domain.score.dto.out.ResponseDailyCalorieChangeDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.pknu.caloriepay.global.config.RedisCacheConfig.USER_CALORIE_CHANGE_CACHE;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ public class DailyCalorieChangeService {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final DailyCalorieChangeRepository dailyCalorieChangeRepository;
 
+    @Cacheable(value = USER_CALORIE_CHANGE_CACHE,key = "#userId",cacheManager = "caloriePayCacheManager")
     public ResponseDailyCalorieChangeDto getCalorieChange(Long userId) {
         return dailyCalorieChangeRepository.findByUserId(userId)
                 .map(ResponseDailyCalorieChangeDto::fromEntity)

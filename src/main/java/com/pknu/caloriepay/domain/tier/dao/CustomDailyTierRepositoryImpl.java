@@ -3,7 +3,6 @@ package com.pknu.caloriepay.domain.tier.dao;
 import com.pknu.caloriepay.domain.tier.domain.QDailyTier;
 import com.pknu.caloriepay.domain.tier.domain.Tier;
 import com.pknu.caloriepay.domain.tier.dto.out.ResponseDailyTierOfMonth;
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

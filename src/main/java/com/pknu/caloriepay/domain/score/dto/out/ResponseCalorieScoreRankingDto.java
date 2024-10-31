@@ -2,13 +2,17 @@ package com.pknu.caloriepay.domain.score.dto.out;
 
 import com.pknu.caloriepay.domain.score.domain.CalorieScore;
 import com.pknu.caloriepay.domain.user.domain.Member;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Builder
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ResponseCalorieScoreRankingDto{
 
     private Long id;

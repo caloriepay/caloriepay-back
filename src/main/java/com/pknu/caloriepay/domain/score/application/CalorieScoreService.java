@@ -22,6 +22,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import static com.pknu.caloriepay.global.config.RedisCacheConfig.USER_CALORIE_SCORE_CACHE;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +31,7 @@ public class CalorieScoreService {
     private final CalorieScoreRepository calorieScoreRepository;
     private final MemberRepository memberRepository;
 
+    @Cacheable(value = USER_CALORIE_SCORE_CACHE, key = "#userId",cacheManager = "caloriePayCacheManager")
     public ResponseCalorieScoreDto getCalorieScoreByUserIdAndDate(Long userId){
         Member member = memberRepository.findById(userId).orElseThrow(() ->new CustomException(ResCode.USER_NOT_FOUND));
 
