@@ -11,6 +11,7 @@ import com.pknu.caloriepay.global.event.MealEventDto;
 import com.pknu.caloriepay.global.event.UserProfileEventDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,8 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.time.LocalDate;
 
+import static com.pknu.caloriepay.global.config.RedisCacheConfig.USER_CALORIE_CHANGE_CACHE;
+import static com.pknu.caloriepay.global.config.RedisCacheConfig.USER_CALORIE_SCORE_CACHE;
 
 @Component
 @Slf4j
@@ -66,7 +69,7 @@ public class CalorieScoreAndChangeEventListener {
     }
 
 //    운동 기록시 일별 칼로리 계산
-
+    @CacheEvict(value = USER_CALORIE_SCORE_CACHE, key = "#exerciseEventDto.userId", cacheManager = "caloriePayCacheManager")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void caloriePlus(ExerciseEventDto exerciseEventDto){
@@ -76,6 +79,7 @@ public class CalorieScoreAndChangeEventListener {
         dailyCalorieChangeRepository.save(calorieChange);
     }
 
+    @CacheEvict(value = USER_CALORIE_CHANGE_CACHE, key = "#mealEventDto.userId", cacheManager = "caloriePayCacheManager")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void calorieMinus(MealEventDto mealEventDto){
