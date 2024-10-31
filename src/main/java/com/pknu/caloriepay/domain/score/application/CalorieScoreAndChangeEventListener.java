@@ -20,8 +20,8 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.time.LocalDate;
 
-import static com.pknu.caloriepay.global.config.RedisCacheConfig.USER_CALORIE_CHANGE_CACHE;
-import static com.pknu.caloriepay.global.config.RedisCacheConfig.USER_CALORIE_SCORE_CACHE;
+import static com.pknu.caloriepay.global.config.cache.RedisCacheConfig.USER_CALORIE_CHANGE_CACHE;
+import static com.pknu.caloriepay.global.config.cache.RedisCacheConfig.USER_CALORIE_SCORE_CACHE;
 
 @Component
 @Slf4j

@@ -7,22 +7,17 @@ import com.pknu.caloriepay.domain.user.dao.MemberRepository;
 import com.pknu.caloriepay.domain.user.domain.Member;
 import com.pknu.caloriepay.global.enums.ResCode;
 import com.pknu.caloriepay.global.error.CustomException;
-import com.pknu.caloriepay.global.event.DailyCalorieSummaryEventDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static com.pknu.caloriepay.global.config.RedisCacheConfig.USER_CALORIE_SCORE_CACHE;
+import static com.pknu.caloriepay.global.config.cache.RedisCacheConfig.USER_CALORIE_SCORE_CACHE;
 
 @Service
 @RequiredArgsConstructor
@@ -83,21 +78,21 @@ public class CalorieScoreService {
                 );
     }
 
-    @Async("threadPoolTaskExecutor")
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void calculateScore(DailyCalorieSummaryEventDto eventDto) {
-        eventDto.getDailyCalorieChangeDtoList().forEach(dto -> {
-            CalorieScore existingScore = calorieScoreRepository.findByUserIdAndDate(dto.getUserId(), LocalDate.now().minusDays(1))
-                    .orElseThrow(() -> new CustomException(ResCode.SCORE_NOT_FOUND));
-
-            CalorieScore newScore = CalorieScore.builder()
-                    .userId(dto.getUserId())
-                    .score(existingScore.getScore()) // 이전 점수 또는 계산된 값
-                    .date(LocalDate.now())
-                    .build();
-
-            calorieScoreRepository.save(newScore); // 새로 생성된 CalorieScore 저장
-        });
-    }
+//    @Async("threadPoolTaskExecutor")
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
+//    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+//    public void calculateScore(DailyCalorieSummaryEventDto eventDto) {
+//        eventDto.getDailyCalorieChangeDtoList().forEach(dto -> {
+//            CalorieScore existingScore = calorieScoreRepository.findByUserIdAndDate(dto.getUserId(), LocalDate.now().minusDays(1))
+//                    .orElseThrow(() -> new CustomException(ResCode.SCORE_NOT_FOUND));
+//
+//            CalorieScore newScore = CalorieScore.builder()
+//                    .userId(dto.getUserId())
+//                    .score(existingScore.getScore()) // 이전 점수 또는 계산된 값
+//                    .date(LocalDate.now())
+//                    .build();
+//
+//            calorieScoreRepository.save(newScore); // 새로 생성된 CalorieScore 저장
+//        });
+//    }
 }

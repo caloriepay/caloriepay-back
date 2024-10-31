@@ -1,4 +1,4 @@
-package com.pknu.caloriepay.global.config;
+package com.pknu.caloriepay.global.config.cache;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
